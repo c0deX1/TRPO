@@ -171,24 +171,24 @@ namespace Dictionary.AVLTree
             }
 
         }
-        public void DisplayTree()
+        public string DisplayTree()
         {
+            StringBuilder sb = new StringBuilder();
             if (root == null)
             {
-                Console.WriteLine("Tree is empty");
-                return;
+                return sb.Append("Tree is empty").ToString();
             }
-            InOrderDisplayTree(root);
-            Console.WriteLine();
+            return InOrderDisplayTree(root, sb).ToString();
         }
-        private void InOrderDisplayTree(Node<T> current)
+        private StringBuilder InOrderDisplayTree(Node<T> current, StringBuilder sb)
         {
             if (current != null)
             {
-                InOrderDisplayTree(current.left);
-                Console.Write("({0}) ", current.data);
-                InOrderDisplayTree(current.right);
+                InOrderDisplayTree(current.left, sb);
+                sb.Append($"{ current.data} ");
+                InOrderDisplayTree(current.right, sb);
             }
+            return sb;
         }
         private int max(int l, int r)
         {

@@ -1,4 +1,5 @@
 ﻿using Dictionary.AVLTree;
+using Dictionary.Writers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,13 @@ namespace Dictionary
         private void button1_Click(object sender, EventArgs e)
         {
             AVLTree<string> avl = new AVLTree<string>();
+            Writer writer = new FormWriter();
 
             avl.Add("Hello");
             avl.Add("It's");
             avl.Add("Tree");
 
-            avl.DisplayTree();
+            writer.Write(avl.DisplayTree());
         }
     }
 }
