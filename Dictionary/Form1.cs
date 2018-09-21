@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dictionary.AVLTree;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,17 @@ namespace Dictionary
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AVLTree<string> avl = new AVLTree<string>();
+
+            avl.Add("Hello");
+            avl.Add("It's");
+            avl.Add("Tree");
+
+            avl.DisplayTree();
         }
     }
 }
