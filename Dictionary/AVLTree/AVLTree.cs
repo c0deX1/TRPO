@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dictionary.Interfaces;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,20 +8,19 @@ using System.Text;
 
 namespace Dictionary.AVLTree
 {
-    class AVLTree<T>
+    class AVLTree<T> : SearchStruct<T>
     {
-        Node<T> root;
-
+        public Node<T> root;
+        
         public AVLTree()
         {
         }
 
-        public void Add(T data)
+        public void Add(T data, int reference)
         {
-            Node<T> newElement = new Node<T>(data);
+            Node<T> newElement = new Node<T>(data, reference);
             root = (root == null) ? newElement : RecursiveInsert(root, newElement);
         }
-
         private Node<T> RecursiveInsert(Node<T> current, Node<T> newElement)
         {
             if (current == null)
@@ -39,7 +40,6 @@ namespace Dictionary.AVLTree
             }
             return current;
         }
-
         private Node<T> Balance(Node<T> current)
         {
             int b_factor = BalanceNumber(current);
@@ -67,7 +67,6 @@ namespace Dictionary.AVLTree
             }
             return current;
         }
-
         public void Delete(T target)
         {//and here
             root = Delete(root, target);
@@ -137,55 +136,50 @@ namespace Dictionary.AVLTree
             }
             return current;
         }
-        public void Find(T key)
+        public int? Find(T key)
         {
-            if (Find(key, root).data.Equals(key))
-            {
-                Console.WriteLine("{0} was found!", key);
-            }
-            else
-            {
-                Console.WriteLine("Nothing found!");
-            }
+            var finded = Find(key, root);
+            if (finded != null)
+                if (finded.data.Equals(key))
+                {
+                    return finded.reference;
+                }
+            return null;
         }
         private Node<T> Find(T target, Node<T> current)
         {
-
-            if (target.GetHashCode() < current.data.GetHashCode())
+            try
             {
-                if (target.Equals(current.data))
+                if (target.GetHashCode() < current.data.GetHashCode())
                 {
-                    return current;
+                    if (target.Equals(current.data))
+                    {
+                        return current;
+                    }
+                    else
+                        return Find(target, current.left);
                 }
                 else
-                    return Find(target, current.left);
-            }
-            else
-            {
-                if (target.Equals(current.data))
                 {
-                    return current;
+                    if (target.Equals(current.data))
+                    {
+                        return current;
+                    }
+                    else
+                        return Find(target, current.right);
                 }
-                else
-                    return Find(target, current.right);
             }
-
-        }
-        public string DisplayTree()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (root == null)
+            catch
             {
-                return sb.Append("Tree is empty").ToString();
+                return null;
             }
-            return InOrderDisplayTree(root, sb).ToString();
         }
         private StringBuilder InOrderDisplayTree(Node<T> current, StringBuilder sb)
         {
             if (current != null)
             {
                 InOrderDisplayTree(current.left, sb);
-                sb.Append($"{ current.data} ");
+                sb.Append($"{ current.data}\n");
                 InOrderDisplayTree(current.right, sb);
             }
             return sb;
@@ -238,6 +232,15 @@ namespace Dictionary.AVLTree
             Node<T> pivot = parent.right;
             parent.right = RotateLL(pivot);
             return RotateRR(parent);
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (root == null)
+            {
+                return sb.Append("").ToString();
+            }
+            return InOrderDisplayTree(root, sb).ToString();
         }
     }
 }

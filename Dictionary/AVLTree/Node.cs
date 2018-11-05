@@ -9,12 +9,22 @@ namespace Dictionary.AVLTree
     class Node<T>
     {
         public T data;
+        public int reference;
         public Node<T> left;
         public Node<T> right;
 
+        public Node()
+        {
+        }
         public Node(T data)
         {
             this.data = data;
+        }
+
+        public Node(T data, int reference)
+        {
+            this.data = data;
+            this.reference = reference;
         }
 
         public override bool Equals(object obj)

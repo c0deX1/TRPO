@@ -9,6 +9,6 @@ namespace Dictionary.Writers
 {
     class FormWriter : Writer
     {
-        public override void Write(string data) => Form1.richTextBox1.Text = data;
+        public override void Write(string data, Form1 handler) { }//handler.Invoke(new Action(()=> { handler.richTextBox1.Text = data; }));
     }
 }
